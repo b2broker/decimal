@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace B2B\Decimal;
 
-use B2B\Eloquent\TypeCasting\Contracts\TypeCasting;
+use B2B\Eloquent\TypeCasting\Contracts\TypeCastingInterface;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @package B2B\Decimal
  */
-class DecimalTypeCasting implements TypeCasting
+class DecimalTypeCasting implements TypeCastingInterface
 {
     /**
      * @param string $key
