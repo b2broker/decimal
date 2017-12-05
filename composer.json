@@ -1,0 +1,26 @@
+{
+    "name": "b2b/decimal",
+    "description": "Decimal type",
+    "authors": [
+        {
+            "name": "Dmytro Kulyk",
+            "email": "lnkvisitor.ts@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.0",
+        "litipk/php-bignumbers": "^0.8.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "B2B\\Decimal\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "B2B\\Decimal\\ServiceProvider"
+            ]
+        }
+    }
+}
