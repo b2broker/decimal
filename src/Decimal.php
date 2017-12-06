@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace B2B\Decimal;
 
 use B2B\Decimal\Contracts\DecimalInterface;
+use JsonSerializable;
 use Litipk\BigNumbers\Errors\InfiniteInputError;
 use Litipk\BigNumbers\Errors\NaNInputError;
 use Litipk\BigNumbers\Errors\NotImplementedError;
@@ -13,7 +14,7 @@ use Litipk\BigNumbers\Errors\NotImplementedError;
  *
  * @package B2B\Decimal
  */
-class Decimal implements DecimalInterface
+class Decimal implements DecimalInterface, JsonSerializable
 {
     protected const DEFAULT_SCALE                 = 16;
     private const   CLASSIC_DECIMAL_NUMBER_REGEXP = '/^([+\-]?)0*(([1-9]\d*|\d)(\.\d+)?)$/';
@@ -1484,6 +1485,18 @@ class Decimal implements DecimalInterface
      * @return array
      */
     public function __debugInfo(): array
+    {
+        return [
+            'value' => $this->value,
+            'scale' => $this->scale,
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     * @return array
+     */
+    public function jsonSerialize(): array
     {
         return [
             'value' => $this->value,
