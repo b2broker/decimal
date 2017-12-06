@@ -1479,4 +1479,15 @@ class Decimal implements DecimalInterface
             ($abs->comp(DecimalConstants::one()) === -1) ? 2 : \max($val->scale, 1)
             ) - ($val->isNegative() ? 1 : 0);
     }
+
+    /**
+     * @return array
+     */
+    public function __debugInfo(): array
+    {
+        return [
+            'value' => $this->value,
+            'scale' => $this->scale,
+        ];
+    }
 }
