@@ -17,7 +17,7 @@ use Litipk\BigNumbers\Errors\NotImplementedError;
 class Decimal implements DecimalInterface, JsonSerializable
 {
     protected const DEFAULT_SCALE                 = 16;
-    private const   CLASSIC_DECIMAL_NUMBER_REGEXP = '/^([+\-]?)0*(([1-9]\d*|\d)(\.\d+)?)$/';
+    private const   CLASSIC_DECIMAL_NUMBER_REGEXP = '/^([+\-]?)0*(([1-9]\d*|\d)(\.(\d+))?)$/';
     private const   EXP_NOTATION_NUMBER_REGEXP    =
         '/^ (?P<sign> [+\-]?) 0*(?P<mantissa> \d(?P<decimals> \.\d+)?) [eE] (?P<expSign> [+\-]?)(?P<exp> \d+)$/x';
     private const   EXP_NUM_GROUPS_NUMBER_REGEXP  =
@@ -1502,5 +1502,34 @@ class Decimal implements DecimalInterface, JsonSerializable
             'value' => $this->value,
             'scale' => $this->scale,
         ];
+    }
+
+    /**
+     * @param int      $decimals
+     * @param string   $dec_point
+     * @param string   $thousands_sep
+     * @param int|null $min_decimals
+     *
+     * @return string
+     */
+    public function format(
+        int $decimals = 2,
+        string $dec_point = ".",
+        string $thousands_sep = ",",
+        int $min_decimals = null
+    ): string {
+        $min_decimals = $min_decimals ?? $decimals;
+        preg_match(self::CLASSIC_DECIMAL_NUMBER_REGEXP, $this->round($decimals)->getValue(), $captures);
+        $number = self::normalizeSign($captures[1]);
+        $number .= strrev(implode($thousands_sep, str_split(strrev($captures[3]), 3)));
+        if ($decimals !== 0) {
+            var_dump($captures, "/^(\d{{$min_decimals},})0*?$/");
+            $decimal = preg_replace("/^(\d{{$min_decimals},}?)0*$/", '$1',
+                str_pad($captures[5] ?? '', $min_decimals, '0', STR_PAD_RIGHT));
+            if (strlen($decimal) > 0) {
+                $number .= $dec_point . $decimal;
+            }
+        }
+        return $number;
     }
 }
