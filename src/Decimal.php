@@ -1514,18 +1514,21 @@ class Decimal implements DecimalInterface, JsonSerializable
      */
     public function format(
         int $decimals = 2,
-        string $dec_point = ".",
-        string $thousands_sep = ",",
+        string $dec_point = '.',
+        string $thousands_sep = ',',
         int $min_decimals = null
     ): string {
-        $min_decimals = $min_decimals ?? max(2, (int) log($decimals, 2));
-        preg_match(self::CLASSIC_DECIMAL_NUMBER_REGEXP, $this->round($decimals)->getValue(), $captures);
+        $min_decimals = $min_decimals ?? \max(2, (int) log($decimals, 2));
+        \preg_match(self::CLASSIC_DECIMAL_NUMBER_REGEXP, $this->round($decimals)->getValue(), $captures);
         $number = self::normalizeSign($captures[1]);
-        $number .= implode($thousands_sep, array_reverse(array_map('strrev', str_split(strrev($captures[3]), 3))));
+        $number .= implode($thousands_sep, \array_reverse(\array_map('strrev', \str_split(\strrev($captures[3]), 3))));
         if ($decimals !== 0) {
-            $decimal = preg_replace("/^(\d{{$min_decimals},}?)0*$/", '$1',
-                str_pad($captures[5] ?? '', $min_decimals, '0', STR_PAD_RIGHT));
-            if (strlen($decimal) > 0) {
+            $decimal = \preg_replace(
+                "/^(\d{{$min_decimals},}?)0*$/",
+                '$1',
+                \str_pad($captures[5] ?? '', $min_decimals, '0', STR_PAD_RIGHT)
+            );
+            if (\strlen($decimal) > 0) {
                 $number .= $dec_point . $decimal;
             }
         }
